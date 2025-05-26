@@ -10,7 +10,7 @@ import zipfile
 checkpoint_dir = "./results/checkpoint-240"
 zip_path = "./results/model.zip"
 
-# ID del archivo en Google Drive
+# ID del archivo ZIP en Google Drive (revisar que sea el ZIP con el checkpoint)
 file_id = "15gH7j7EKHgGozEvwV2IdAg_pi5eqlawu"
 gdown_url = f"https://drive.google.com/uc?id={file_id}"
 
@@ -22,7 +22,8 @@ if not os.path.exists(checkpoint_dir):
 
     print("Descomprimiendo modelo...")
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall("./results")
+        # Extrae todo directamente dentro de checkpoint_dir para que la estructura quede bien
+        zip_ref.extractall(checkpoint_dir)
 else:
     print("Checkpoint ya existe.")
 
@@ -61,6 +62,11 @@ def predict(request: TextRequest):
         raise HTTPException(status_code=400, detail="El campo 'text' no puede estar vacío")
     label, scores = predict_labels(request.text)
     return PredictionResponse(label=label, scores=scores)
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
 
 
 
