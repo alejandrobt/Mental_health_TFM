@@ -18,7 +18,7 @@ app = FastAPI(
 
 
 # Carga del modelo entrenado
-MODEL_NAME = r"C:\Users\carlo\OneDrive\Escritorio\Master\TFM\results\checkpoint-240"
+MODEL_NAME = "./results/checkpoint-240"
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 model.eval()
